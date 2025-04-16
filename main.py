@@ -4,11 +4,7 @@ import time
 
 
 def back_loop():
-    while True:
-        while not interface.loaded_info:
-            time.sleep(1)
-        
-        alias_address, subject_info, body_info = interface.get_mail_info()
+    pass
 
 if __name__ == "__main__":
     interface = ui.UserInterface()

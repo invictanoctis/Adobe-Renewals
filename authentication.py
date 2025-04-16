@@ -5,7 +5,7 @@ import logs
 from dotenv import load_dotenv
 
 
-load_dotenv() # using environment variables to avoid hardcoding (git related)
+load_dotenv() # using env to avoid hardcoding (git related)
 
 tenant_id = os.getenv("TENANT_ID")
 client_id = os.getenv("CLIENT_ID")
@@ -71,7 +71,7 @@ def send_mail(interface:object, token:str, user_address:str, subject:str, body:s
         "Content-Type": "application/json"
     }
     
-    email_data = {
+    email_data = { # json format specified by Graph API
         "message": {
             "subject": subject,
             "body": {
@@ -95,7 +95,7 @@ def send_mail(interface:object, token:str, user_address:str, subject:str, body:s
     }
     
     try:
-        response = requests.post(GRAPH_API_URL.format(user_id=user_address), headers=headers, json=email_data)
+        response = requests.post(GRAPH_API_URL.format(user_id=user_address), headers=headers, json=email_data) # post mail request to Graph API
         
         if response.status_code == 202:
             interface.update_status(f"Mail gesendet an: {recipient_address}")
