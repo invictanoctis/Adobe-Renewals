@@ -106,8 +106,7 @@ def send_mail(interface:object, token:str, user_address:str, subject:str, body:s
         
     except Exception:
         interface.update_status(f"Error bei Mail an: {recipient_address}")
-        logs.new_error(f"Error sending mail to: {recipient_address}")
-        logs.new_debug(f"Error was: {response.status_code}")
+        logs.new_error(f"Error {response.status_code} sending mail to: {recipient_address}")
         return False
 
 def placeholder(): # temporarily for ui to function

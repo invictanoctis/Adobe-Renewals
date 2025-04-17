@@ -125,10 +125,11 @@ class UserInterface():
 
         # Right Side
 
+        # Picture Insert + Scaling
         try:
-            image_path = "adobe_icon.png"
+            image_path = "ressources/adobe_icon.png"
             if not os.path.exists(image_path):
-                raise FileNotFoundError(f"Image not found at {image_path}")
+                raise FileNotFoundError(f"Error with {image_path}")
 
             original_image = Image.open(image_path)
             resized_image = original_image.resize((100, 100), Image.Resampling.LANCZOS)
@@ -139,7 +140,7 @@ class UserInterface():
             self.image_label.pack(pady=5)
 
         except Exception as e:
-            print(f"[ERROR] Failed to load image: {e}")
+            logs.new_error(f"Failed to load image: {e}")
             self.image_label = tk.Label(self.right_frame, text="Bild konnte nicht geladen werden", fg=self.black, bg=self.white)
             self.image_label.pack(pady=5)
 
@@ -242,15 +243,16 @@ class UserInterface():
         Checks whether all the mail information was given by the user, sets loaded_info True if that's the case
         """
 
-        logs.new_debug("Parse button clicked...")
+        logs.new_info("Parse button clicked...")
+
         user_address = self.get_user()
         subject_info = self.get_subject()
         body_info = self.get_body()
 
         if all([user_address, subject_info, body_info, self.loaded_data1, self.loaded_data2]):
             self.update_status("Alle Mailinfos wurden geladen...")
-            logs.new_debug("Mailinfo checked successfully...")
+            logs.new_info("Mailinfo checked successfully...")
             self.loaded_info = True
         else:
             self.update_status("Nicht alle Informationen wurden angegeben...")
-            logs.new_debug("Not every mail information was given...")
+            logs.new_info("Not every mail information was given...")
