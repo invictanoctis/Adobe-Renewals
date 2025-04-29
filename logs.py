@@ -4,15 +4,15 @@ from datetime import datetime
 
 
 log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logs")
-os.makedirs(log_dir, exist_ok=True) # creates the logs folder in the current directory
+os.makedirs(log_dir, exist_ok=True)
 
-log_filename = datetime.now().strftime("log_%d-%m-%Y_%H-%M-%S.log") # file name: DMY - HMS
+log_filename = datetime.now().strftime("log_%d-%m-%Y_%H-%M-%S.log") # filename: DMY - HMS
 log_path = os.path.join(log_dir, log_filename)
 
 logging.basicConfig(
     filename=log_path,
     level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s", # message prefix: time - level - message
+    format="%(asctime)s - %(levelname)s - %(message)s",
     datefmt="%d-%m-%Y %H:%M:%S" # message prefix: DMY - HMS
 )
 
@@ -42,7 +42,7 @@ def new_error(message:str) -> None:
     else:
         print("Logging Error: wrong Type") # debug
 
-def new_debug(message:str) -> None: # !!! not useable right now since level is set to INFO
+def new_debug(message:str) -> None: # currently not useable since level is set to INFO
     """
     Creates a new debug in the current log
     

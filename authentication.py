@@ -95,7 +95,7 @@ def send_mail(interface:object, token:str, user_address:str, subject:str, body:s
     }
     
     try:
-        response = requests.post(GRAPH_API_URL.format(user_id=user_address), headers=headers, json=email_data) # post mail request to Graph API
+        response = requests.post(GRAPH_API_URL.format(user_id=user_address), headers=headers, json=email_data)
         
         if response.status_code == 202:
             interface.update_status(f"Mail gesendet an: {recipient_address}")
@@ -109,5 +109,5 @@ def send_mail(interface:object, token:str, user_address:str, subject:str, body:s
         logs.new_error(f"Error {response.status_code} sending mail to: {recipient_address}")
         return False
 
-def placeholder(): # temporarily for ui to function
+def placeholder(): # temporarily in order for ui to function
     pass
