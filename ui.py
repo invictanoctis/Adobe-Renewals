@@ -35,38 +35,30 @@ class UserInterface():
             font=("Arial", 24, "bold"),
             fg=self.black,
             bg=self.red
-        ).pack(fill="x", pady=(0, 10))
+        )
+        self.title_label.pack(fill="x", pady=(0, 10))
 
         # ---------------- Frames
 
         # Main Frame
-        self.main_frame = tk.Frame(self.root, 
-                                   bg=self.offwhite).pack(expand=True, 
-                                                          fill="both", 
-                                                          padx=20, 
-                                                          pady=10)
+        self.main_frame = tk.Frame(self.root, bg=self.offwhite)
+        self.main_frame.pack(expand=True, fill="both", padx=20, pady=10)
 
         # Left Frame
-        self.left_frame = tk.Frame(self.main_frame, 
-                                   bg=self.white).pack(side="left", 
-                                                       expand=True, 
-                                                       fill="both", 
-                                                       padx=(0, 10))
+        self.left_frame = tk.Frame(self.main_frame, bg=self.white)
+        self.left_frame.pack(side="left", expand=True, fill="both", padx=(0, 10))
 
         # Excel Button Frame 1
-        self.excel1_btn_frame = tk.Frame(self.left_frame, 
-                                    bg=self.white).pack(pady=5, anchor="w")
+        self.excel1_btn_frame = tk.Frame(self.left_frame, bg=self.white)
+        self.excel1_btn_frame.pack(pady=5, anchor="w")
 
         # Excel Button Frame 2
-        self.excel2_btn_frame = tk.Frame(self.left_frame, 
-                                         bg=self.white).pack(pady=5, anchor="w")
+        self.excel2_btn_frame = tk.Frame(self.left_frame, bg=self.white)
+        self.excel2_btn_frame.pack(pady=5, anchor="w")
 
         # Right Frame
-        self.right_frame = tk.Frame(self.main_frame, 
-                                    bg=self.white).pack(side="right", 
-                                                        expand=True, 
-                                                        fill="both", 
-                                                        padx=(10, 0))
+        self.right_frame = tk.Frame(self.main_frame, bg=self.white)
+        self.right_frame.pack(side="right", expand=True,  fill="both", padx=(10, 0))
 
         # ---------------- Left Side
 
@@ -82,9 +74,8 @@ class UserInterface():
                   text="Durchsuchen", 
                   bg=self.white, 
                   fg=self.black,
-                  command=lambda: lists.load_excel(self, "Button 1")).pack(side="left", 
-                                                                           padx=(0, 5))
-        
+                  command=lambda: lists.load_excel(self, "Button 1")).pack(side="left", padx=(0, 5))
+
         # Excel 1 View Button
         tk.Button(self.excel1_btn_frame, 
                   text="Aufrufen", 
@@ -105,7 +96,7 @@ class UserInterface():
                   bg=self.white, 
                   fg=self.black,
                   command=lambda: lists.load_excel(self, "Button 2")).pack(side="left", padx=(0, 5))
-        
+
         # Excel 2 View Button
         tk.Button(self.excel2_btn_frame, 
                   text="Aufrufen", 
@@ -119,12 +110,13 @@ class UserInterface():
                  font=("Arial", 12, "bold"),
                  bg=self.white, 
                  fg=self.black).pack(anchor="w", pady=5)
-        
+
         # Mail Entry
         self.user = tk.Entry(self.left_frame, 
-                              width=40, 
-                              bg=self.offwhite, 
-                              relief="groove").pack(pady=2)
+                             width=40, 
+                             bg=self.offwhite, 
+                             relief="groove")
+        self.user.pack(pady=2)
 
         # Subject Label
         tk.Label(self.left_frame,
@@ -132,12 +124,13 @@ class UserInterface():
                  font=("Arial", 12, "bold"),
                  bg=self.white, 
                  fg=self.black).pack(anchor="w", pady=5)
-        
+
         # Subject Entry
         self.subject = tk.Entry(self.left_frame, 
                                 width=40, 
                                 bg=self.offwhite, 
-                                relief="groove").pack(pady=2)
+                                relief="groove")
+        self.subject.pack(pady=2)
 
         # Body Label
         tk.Label(self.left_frame, 
@@ -145,13 +138,14 @@ class UserInterface():
                  font=("Arial", 12, "bold"),
                  bg=self.white, 
                  fg=self.black).pack(anchor="w", pady=5)
-        
+
         # Body Text
         self.body = tk.Text(self.left_frame, 
                             height=8, 
                             width=40, 
                             bg=self.offwhite, 
-                            relief="groove").pack(pady=2)
+                            relief="groove")
+        self.body.pack(pady=2)
 
         # ---------------- Right Side
 
@@ -180,7 +174,8 @@ class UserInterface():
                                       bg=self.white,
                                       fg=self.black, 
                                       width=20, 
-                                      command=self.check_info).pack(pady=20)
+                                      command=self.check_info)
+        self.parse_button.pack(pady=20)
 
         # Send Button
         self.send_button = tk.Button(self.right_frame, 
@@ -188,15 +183,17 @@ class UserInterface():
                                      bg=self.white,
                                      fg=self.black, 
                                      width=20, 
-                                     command=authentication.placeholder).pack(pady=5)
-
+                                     command=authentication.placeholder)
+        self.send_button.pack(pady=5)
+        
         # Messagebox
         self.status_box = tk.Text(self.right_frame, 
                                   height=10, 
                                   width=50,
                                   state="disabled",
                                   wrap="word", 
-                                  bg=self.offwhite).pack(pady=10)
+                                  bg=self.offwhite)
+        self.status_box.pack(pady=10)
 
         # ---------------- Other
 
@@ -207,11 +204,12 @@ class UserInterface():
             font=("Arial", 8),
             bg=self.offwhite,
             fg=self.grey
-        ).place(relx=1.0, 
-                rely=1.0, 
-                x=-10, 
-                y=-5, 
-                anchor="se")
+        )
+        self.version_label.place(relx=1.0, 
+                                 rely=1.0, 
+                                 x=-10, 
+                                 y=-5, 
+                                 anchor="se")
 
 
     # ---------------- Functions 
