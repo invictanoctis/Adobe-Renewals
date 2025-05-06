@@ -15,20 +15,20 @@ class UserInterface():
 
         self.current_version = "v1.0" # current version of application
 
-        # Custom Colors
+        # custom colors
         self.red = "#ed1c24"
         self.black = "black"
         self.white = "white"
         self.grey = "grey"
         self.offwhite = "#f5f5f5"
 
-        # Root setup
+        # root setup
         self.root = tk.Tk()
         self.root.title("Adobe Renewal Mailing")
         self.root.geometry("800x600")
         self.root.configure(bg=self.offwhite)
 
-        # Title Label
+        # title label
         self.title_label = tk.Label(
             self.root,
             text="Adobe Automation: Renewal Mails",
@@ -40,106 +40,106 @@ class UserInterface():
 
         # ---------------- Frames
 
-        # Main Frame
+        # main frame
         self.main_frame = tk.Frame(self.root, bg=self.offwhite)
         self.main_frame.pack(expand=True, fill="both", padx=20, pady=10)
 
-        # Left Frame
+        # left frame
         self.left_frame = tk.Frame(self.main_frame, bg=self.white)
         self.left_frame.pack(side="left", expand=True, fill="both", padx=(0, 10))
 
-        # Excel Button Frame 1
+        # Excel button frame 1
         self.excel1_btn_frame = tk.Frame(self.left_frame, bg=self.white)
         self.excel1_btn_frame.pack(pady=5, anchor="w")
 
-        # Excel Button Frame 2
+        # Excel button frame 2
         self.excel2_btn_frame = tk.Frame(self.left_frame, bg=self.white)
         self.excel2_btn_frame.pack(pady=5, anchor="w")
 
-        # Right Frame
+        # right frame
         self.right_frame = tk.Frame(self.main_frame, bg=self.white)
         self.right_frame.pack(side="right", expand=True,  fill="both", padx=(10, 0))
 
         # ---------------- Left Side
 
-        # Excel 1 Label
+        # Excel 1 label
         tk.Label(self.excel1_btn_frame, 
                  text="Reseller Informationen:", 
                  font=("Arial", 12, "bold"),
                  bg=self.white, 
                  fg=self.black).pack(anchor="w", pady=5)
         
-        # Excel 1 Load Button
+        # Excel 1 load button
         tk.Button(self.excel1_btn_frame, 
                   text="Durchsuchen", 
                   bg=self.white, 
                   fg=self.black,
                   command=lambda: lists.load_excel(self, "Button 1")).pack(side="left", padx=(0, 5))
 
-        # Excel 1 View Button
+        # Excel 1 view button
         tk.Button(self.excel1_btn_frame, 
                   text="Aufrufen", 
                   bg=self.white, 
                   fg=self.black,
                   command=lambda: self.display_treeview(lists.df1, 1)).pack(side="left")
 
-        # Excel 2 Label
+        # Excel 2 label
         tk.Label(self.excel2_btn_frame, 
                  text="Renewal Overview:", 
                  font=("Arial", 12, "bold"),
                  bg=self.white, 
                  fg=self.black).pack(anchor="w", pady=5)
         
-        # Excel 2 Load Button
+        # Excel 2 load button
         tk.Button(self.excel2_btn_frame, 
                   text="Durchsuchen", 
                   bg=self.white, 
                   fg=self.black,
                   command=lambda: lists.load_excel(self, "Button 2")).pack(side="left", padx=(0, 5))
 
-        # Excel 2 View Button
+        # Excel 2 view button
         tk.Button(self.excel2_btn_frame, 
                   text="Aufrufen", 
                   bg=self.white, 
                   fg=self.black,
                   command=lambda: self.display_treeview(lists.df2, 2)).pack(side="left")
 
-        # Mail Label
+        # mail label
         tk.Label(self.left_frame, 
                  text="User-Mail:", 
                  font=("Arial", 12, "bold"),
                  bg=self.white, 
                  fg=self.black).pack(anchor="w", pady=5)
 
-        # Mail Entry
+        # mail entry
         self.user = tk.Entry(self.left_frame, 
                              width=40, 
                              bg=self.offwhite, 
                              relief="groove")
         self.user.pack(pady=2)
 
-        # Subject Label
+        # subject label
         tk.Label(self.left_frame,
                  text="Betreff:", 
                  font=("Arial", 12, "bold"),
                  bg=self.white, 
                  fg=self.black).pack(anchor="w", pady=5)
 
-        # Subject Entry
+        # subject entry
         self.subject = tk.Entry(self.left_frame, 
                                 width=40, 
                                 bg=self.offwhite, 
                                 relief="groove")
         self.subject.pack(pady=2)
 
-        # Body Label
+        # body label
         tk.Label(self.left_frame, 
                  text="Inhalt:", 
                  font=("Arial", 12, "bold"),
                  bg=self.white, 
                  fg=self.black).pack(anchor="w", pady=5)
 
-        # Body Text
+        # body text
         self.body = tk.Text(self.left_frame, 
                             height=8, 
                             width=40, 
@@ -149,9 +149,10 @@ class UserInterface():
 
         # ---------------- Right Side
 
-        # Adobe Icon (of course not the most legal thing to do)
+        # Adobe icon (not the most legal thing to do)
         try:
             image_path = "ressources/adobe_icon.png"
+
             if not os.path.exists(image_path):
                 raise FileNotFoundError(f"Error with {image_path}")
 
@@ -168,7 +169,7 @@ class UserInterface():
             self.image_label = tk.Label(self.right_frame, text="Bild konnte nicht geladen werden", fg=self.black, bg=self.white)
             self.image_label.pack(pady=5)
 
-        # Info-Check Button
+        # info-check button
         self.parse_button = tk.Button(self.right_frame, 
                                       text="Infos Laden",
                                       bg=self.white,
@@ -177,7 +178,7 @@ class UserInterface():
                                       command=self.check_info)
         self.parse_button.pack(pady=20)
 
-        # Send Button
+        # send button
         self.send_button = tk.Button(self.right_frame, 
                                      text="Lossenden", 
                                      bg=self.white,
@@ -186,7 +187,7 @@ class UserInterface():
                                      command=authentication.placeholder)
         self.send_button.pack(pady=5)
         
-        # Messagebox
+        # messagebox
         self.status_box = tk.Text(self.right_frame, 
                                   height=10, 
                                   width=50,
@@ -197,7 +198,7 @@ class UserInterface():
 
         # ---------------- Other
 
-        # Version Label
+        # version label
         self.version_label = tk.Label(
             self.root,
             text=self.current_version,
@@ -277,16 +278,16 @@ class UserInterface():
         subject_info = self.get_subject()
         body_info = self.get_body()
 
-        if all([user_address, subject_info, body_info, self.loaded_data1, self.loaded_data2]):
+        if all([user_address, subject_info, body_info, self.loaded_data1, self.loaded_data2]): # if all information is not empty
             self.update_status("Alle Mailinfos wurden geladen...")
             logs.new_info("Mailinfo checked successfully...")
-            self.loaded_info = True
+            self.loaded_info = True # sets loaded_info to True, so the send button can be used
         else:
             self.update_status("Nicht alle Informationen wurden angegeben...")
             logs.new_info("Not every mail information was given...")
 
     def display_treeview(self, df, number) -> None:
-        # lag/crash prevention
+        # lag/crash prevention to check whether the wanted list was loaded
         if number == 1:
             if not self.loaded_data1:
                 self.update_status("Excel noch nicht geladen...")
@@ -296,38 +297,38 @@ class UserInterface():
                 self.update_status("Excel noch nicht geladen...")
                 return
         
-        # Toplevel setup
+        # toplevel setup
         new_window = tk.Toplevel() 
         new_window.title("Excel Viewing")
         new_window.geometry("800x600")
 
-        # Style setup
+        # style setup
         style = ttk.Style()
         style.configure("White.TFrame", background="white")
 
-        # Dataframe Frame
+        # dataframe frame
         tree_frame = ttk.Frame(new_window, style="White.TFrame")
         tree_frame.pack(expand=True, 
                         fill="both", 
                         padx=20, 
                         pady=10)
 
-        # Dataframe Treeview
+        # dataframe treeview
         tree = ttk.Treeview(tree_frame, 
                             columns=list(df.columns), 
                             show="headings", 
                             height=10)
 
-        # Columns
+        # columns
         for col in df.columns:
             tree.heading(col, text=col)
             tree.column(col, width=100, anchor=tk.W)
 
-        # Rows
+        # rows
         for _, row in df.iterrows():
             tree.insert("", "end", values=list(row))
 
-        # Dataframe Scrollbar
+        # dataframe scrollbar
         scrollbar = ttk.Scrollbar(tree_frame, orient="vertical", command=tree.yview)
         tree.config(yscrollcommand=scrollbar.set)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
