@@ -29,7 +29,7 @@ def load_excel(interface, button_name) -> None:
         filename = file_path.split("/")[-1]
         filename_formatted = filename.rsplit(".", 1)[0].lower()
 
-        expected_files = { # best practice use of dict for later list error handling
+        expected_files = { # best practice use of dict for later excel error prevention
             "Button 1": "reseller_information",
             "Button 2": "renewal_overview"
         }
@@ -58,13 +58,14 @@ def load_excel(interface, button_name) -> None:
                 interface.loaded_data1 = True # global ui info check
             
             else:
-                df2 = pd.read_excel(file_path, header=None, usecols=[ 3, 5, 6, 18]) # parses contractenddate, enddateinfo, productname columns, customerid
+                end_date = pd.to_datetime(interface.get_enddate(), dayfirst=True)
+
+                df2 = pd.read_excel(file_path, header=None, usecols=[3, 5, 6, 18]) # parses contractenddate, enddateinfo, productname columns, customerid
                 df2 = df2.drop(index=0)
                 df2[3] = pd.to_datetime(df2[3], dayfirst=True) # parses contractenddate column as date
 
                 df2 = df2[ # only leaves the rows that have the current month and current year as a value in column 3 and "Adobe" in 6
-                            (df2[3].dt.month == now.month) &
-                            (df2[3].dt.year == now.year) &
+                            (now <= df2[3]) & (df2[3] <= end_date) &
                             df2[6].str.contains("Adobe", case=False, na=False)
                         ]
                 

@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+import tkcalendar as tkc
 from PIL import Image, ImageTk
 import lists
 import authentication
@@ -47,6 +48,22 @@ class UserInterface():
         # left frame
         self.left_frame = tk.Frame(self.main_frame, bg=self.white)
         self.left_frame.pack(side="left", expand=True, fill="both", padx=(0, 10))
+
+        # date label
+        tk.Label(self.left_frame,
+                 text="Zeitraum definieren:", 
+                 font=("Arial", 12, "bold"),
+                 bg=self.white,
+                 fg=self.black).pack(anchor="w", pady=5)
+
+        # date entry
+        self.enddate = tkc.DateEntry(self.left_frame, 
+                                 width=12,
+                                 background=self.grey,
+                                 foreground=self.white, 
+                                 borderwidth=1,
+                                 date_pattern='dd-mm-y')
+        self.enddate.pack(anchor="w", pady=2)
 
         # Excel button frame 1
         self.excel1_btn_frame = tk.Frame(self.left_frame, bg=self.white)
@@ -146,7 +163,7 @@ class UserInterface():
                             bg=self.offwhite, 
                             relief="groove")
         self.body.pack(pady=2)
-
+        
         # ---------------- Right Side
 
         # Adobe icon (not the most legal thing to do)
@@ -257,7 +274,17 @@ class UserInterface():
         """
 
         return self.body.get("1.0", "end").strip()
-    
+
+    def get_enddate(self) -> str:
+        """
+        Get function to retrieve the enddate -specified in the ui- that is needed for filtering the dataframes
+
+        Returns:
+            str: the current enddate
+        """
+
+        return self.enddate.get()
+        
     def get_mail_info(self) -> list:
         """
         Combines all the other get functions into a list of the mail information currently given
