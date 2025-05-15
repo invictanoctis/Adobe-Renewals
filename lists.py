@@ -6,6 +6,7 @@ import logs
 # global dataframes
 df1 = None
 df2 = None
+df_merged = None
 
 # ---------------- Functions
 
@@ -17,7 +18,7 @@ def load_excel(interface, button_name) -> None:
         interface (object): object of ui.UserInterface
         button_name (str): the name of the button that was pressed
     """
-    global df1, df2
+    global df1, df2, df_merged
 
     try:
         file_path = filedialog.askopenfilename(filetypes=[("Excel Files", "*.xlsx;*.xls")])
@@ -58,8 +59,20 @@ def load_excel(interface, button_name) -> None:
                 interface.loaded_data1 = True # global ui info check
             
             else:
-                end_date = pd.to_datetime(interface.get_enddate(), dayfirst=True)
-
+                try:
+                    selected_enddate = datetime.strptime(interface.get_enddate(), "%d-%m-%Y").date()
+                except ValueError:
+                    interface.update_status("Ungültiges Enddatum-Format.")
+                    logs.new_info("Invalid enddate format.")
+                    return
+                
+                if selected_enddate != datetime.today().date():
+                    end_date = pd.to_datetime(interface.get_enddate(), dayfirst=True)
+                else:
+                    interface.update_status("Enddatum nicht gesetzt...")
+                    logs.new_info("Enddate not set...")
+                    return
+                
                 df2 = pd.read_excel(file_path, header=None, usecols=[3, 5, 6, 18]) # parses contractenddate, enddateinfo, productname columns, customerid
                 df2 = df2.drop(index=0)
                 df2[3] = pd.to_datetime(df2[3], dayfirst=True) # parses contractenddate column as date
@@ -85,6 +98,17 @@ def load_excel(interface, button_name) -> None:
     except Exception as f:
         interface.update_status("Error bei File-Auswahl...")
         logs.new_error(f"Error selecting File: {f}")
+    
+    df_merged = merge_frames()
+    
 
-def read_excel():
-    pass
+
+def merge_frames():
+    global df1, df2
+
+    if df1 and df2:
+        merged_df = df1.merge(df2, on='Customer ID', how='inner', suffixes=('_df1', '_df2'))
+        return merged_df
+    else:
+        logs.new_error("Dataframes not loaded or empty.")
+        return None

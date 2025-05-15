@@ -93,13 +93,6 @@ class UserInterface():
                   fg=self.black,
                   command=lambda: lists.load_excel(self, "Button 1")).pack(side="left", padx=(0, 5))
 
-        # Excel 1 view button
-        tk.Button(self.excel1_btn_frame, 
-                  text="Aufrufen", 
-                  bg=self.white, 
-                  fg=self.black,
-                  command=lambda: self.display_treeview(lists.df1, 1)).pack(side="left")
-
         # Excel 2 label
         tk.Label(self.excel2_btn_frame, 
                  text="Renewal Overview:", 
@@ -114,12 +107,12 @@ class UserInterface():
                   fg=self.black,
                   command=lambda: lists.load_excel(self, "Button 2")).pack(side="left", padx=(0, 5))
 
-        # Excel 2 view button
-        tk.Button(self.excel2_btn_frame, 
-                  text="Aufrufen", 
+        # Excel view button
+        tk.Button(self.left_frame, 
+                  text="Listen Aufrufen", 
                   bg=self.white, 
                   fg=self.black,
-                  command=lambda: self.display_treeview(lists.df2, 2)).pack(side="left")
+                  command=lambda: self.display_treeview(lists.df_merged)).pack(anchor="w", pady=10)
 
         # mail label
         tk.Label(self.left_frame, 
@@ -166,9 +159,9 @@ class UserInterface():
         
         # ---------------- Right Side
 
-        # Adobe icon (not the most legal thing to do)
+        # Icon
         try:
-            image_path = "ressources/adobe_icon.png"
+            image_path = "ressources/adobe_logo.png"
 
             if not os.path.exists(image_path):
                 raise FileNotFoundError(f"Error with {image_path}")
@@ -313,17 +306,12 @@ class UserInterface():
             self.update_status("Nicht alle Informationen wurden angegeben...")
             logs.new_info("Not every mail information was given...")
 
-    def display_treeview(self, df, number) -> None:
-        # lag/crash prevention to check whether the wanted list was loaded
-        if number == 1:
-            if not self.loaded_data1:
-                self.update_status("Excel noch nicht geladen...")
-                return
-        else:
-            if not self.loaded_data2:
-                self.update_status("Excel noch nicht geladen...")
-                return
-        
+    def display_treeview(self, df) -> None:
+        # lag/crash prevention to check whether both lists was loaded
+        if not all([self.loaded_data1, self.loaded_data2]):
+            self.update_status("Excel noch nicht geladen...")
+            return
+                
         # toplevel setup
         new_window = tk.Toplevel() 
         new_window.title("Excel Viewing")
