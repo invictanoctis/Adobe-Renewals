@@ -34,10 +34,6 @@ def back_loop():
 
         recipient_address = row
 
-        
-        
-        
-
 
 if __name__ == "__main__":
     interface = ui.UserInterface()

@@ -99,16 +99,15 @@ def load_excel(interface, button_name) -> None:
         interface.update_status("Error bei File-Auswahl...")
         logs.new_error(f"Error selecting File: {f}")
     
-    df_merged = merge_frames()
-    
+    df_merged = merge_frames(interface)
 
-
-def merge_frames():
+def merge_frames(interface):
     global df1, df2
 
-    if df1 and df2:
+    if interface.loaded_data1 and interface.loaded_data2:
         merged_df = df1.merge(df2, on='Customer ID', how='inner', suffixes=('_df1', '_df2'))
+        merged_df.sort_values(by='End-Date', inplace=True)
         return merged_df
     else:
-        logs.new_error("Dataframes not loaded or empty.")
+        logs.new_info("Dataframes not yet loaded or empty.")
         return None
