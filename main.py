@@ -1,41 +1,52 @@
-import threading
-import ui
-import authentication
-import lists
-import mail
+try:
+    import threading
+    import time
+    import ui
+    import authentication
+    import lists
+    import mail
+    import logs
+except ImportError as e:
+    print(f"Error importing modules: {e}")
+    logs.new_error(f"Error importing modules: {e}")
 
+def back_loop(interface):
+    if not interface.loaded_info:
+        interface.update_status("Bitte alle Informationen zuerst angeben...")
+        logs.new_info("Not all information was given. Couldn't start sending...")
+        return
 
-def back_loop():
-    global interface
-    
-    token = authentication.get_token()
+    token = authentication.get_access_token(interface)
+    print(token) #TEMP
 
+    alias = interface.get_user()
     subject = interface.get_subject()
     body = interface.get_body()
 
-    skip_lines = 0
+    df = lists.df_merged
 
-    last_cid = 1 # not False not current_cid
-    current_cid = 2 # not False not last_cid
+    for row in df.itertuples(index=True):
+        subject_parsed = mail.parse_mail(subject, row)
+        body_parsed = mail.parse_mail(body, row)
+        recipient_address = row.Mail_Address
 
-    df = lists.merge_frames()
+        # print(interface, token, alias, subject_parsed, body_parsed, recipient_address) # debug
+        authentication.send_mail(interface, token, alias, subject_parsed, body_parsed, recipient_address)
+        # authentication.testing(interface, token, alias, subject_parsed, body_parsed, recipient_address) # debug
 
-    for index, row in df.itertuples(index=True):
-        if skip_lines:
-            skip_lines -= 1
-            continue
-        elif row.Status == "Inactive":
-            continue
-        
-        current_cid = row[3]
-        print(current_cid)
+        time.sleep(3)
 
-        body = mail.parse_mail()
+    interface.update_status("Alle Mails wurden gesendet!")
+    logs.new_info("All mails were sent...")
 
-        recipient_address = row
+def start_threaded(interface):
+    thread = threading.Thread(target=lambda: back_loop(interface), daemon=True)
+    thread.start()
 
+def main():
+    interface = ui.UserInterface()
+    interface.send_button.config(command=lambda: start_threaded(interface))
+    interface.root.mainloop()
 
 if __name__ == "__main__":
-    interface = ui.UserInterface()
-    # threading.Thread(target=back_loop, daemon=True).start()
-    interface.root.mainloop()
+    main()

@@ -1,12 +1,16 @@
-import tkinter as tk
-from tkinter import ttk
-import tkcalendar as tkc
-from PIL import Image, ImageTk
-import lists
-import authentication
-import logs
-import os
-
+try:
+    import threading
+    import tkinter as tk
+    from tkinter import ttk
+    import tkcalendar as tkc
+    from PIL import Image, ImageTk
+    import lists
+    import authentication
+    import logs
+    import os
+except ImportError as e:
+    print(f"Error importing modules: {e}")
+    logs.new_error(f"Error importing modules: {e}")
 
 class UserInterface():
     def __init__(self):
@@ -167,7 +171,7 @@ class UserInterface():
                 raise FileNotFoundError(f"Error with {image_path}")
 
             original_image = Image.open(image_path)
-            resized_image = original_image.resize((100, 100), Image.Resampling.LANCZOS)
+            resized_image = original_image.resize((100, 100), Image.LANCZOS)
             self.logo = ImageTk.PhotoImage(resized_image)
 
             self.image_label = tk.Label(self.right_frame, image=self.logo, bg=self.white)
@@ -194,7 +198,7 @@ class UserInterface():
                                      bg=self.white,
                                      fg=self.black, 
                                      width=20, 
-                                     command=authentication.placeholder)
+                                     )
         self.send_button.pack(pady=5)
         
         # messagebox
@@ -283,7 +287,7 @@ class UserInterface():
         Combines all the other get functions into a list of the mail information currently given
 
         Returns:
-            list -> a list of strings containing the mail information given
+            list[str]: a list of strings containing the mail information given
         """
         return [self.get_user(), self.get_subject(), self.get_body()]
     
@@ -309,13 +313,13 @@ class UserInterface():
     def display_treeview(self, df) -> None:
         # lag/crash prevention to check whether both lists was loaded
         if not all([self.loaded_data1, self.loaded_data2]):
-            self.update_status("Excel noch nicht geladen...")
+            threading.Thread(target=lambda: self.update_status("Excel noch nicht geladen..."), daemon=True).start()
             return
-                
+        
         # toplevel setup
         new_window = tk.Toplevel() 
         new_window.title("Excel Viewing")
-        new_window.geometry("800x600")
+        new_window.geometry("1000x800")
 
         # style setup
         style = ttk.Style()
@@ -340,12 +344,17 @@ class UserInterface():
             tree.column(col, width=100, anchor=tk.W)
 
         # rows
-        for _, row in df.iterrows():
-            tree.insert("", "end", values=list(row))
+        for row in df.to_dict('records'):
+            tree.insert("", "end", values=list(row.values()))
 
-        # dataframe scrollbar
-        scrollbar = ttk.Scrollbar(tree_frame, orient="vertical", command=tree.yview)
-        tree.config(yscrollcommand=scrollbar.set)
-        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        # vertical scrollbar
+        v_scrollbar = ttk.Scrollbar(tree_frame, orient="vertical", command=tree.yview)
+        tree.config(yscrollcommand=v_scrollbar.set)
+        v_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        # horizontal scrollbar
+        h_scrollbar = ttk.Scrollbar(tree_frame, orient="horizontal", command=tree.xview)
+        tree.config(xscrollcommand=h_scrollbar.set)
+        h_scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
 
         tree.pack(fill=tk.BOTH, expand=True)

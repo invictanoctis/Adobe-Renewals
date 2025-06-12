@@ -1,0 +1,19 @@
+Subject:
+Renewal Notice - [SAP-ID]/[Kunden-ID] - [Kunden-Name]
+
+Body:
+Lieber Adobe Partner,
+
+wir möchten Sie daran erinnern, dass der Adobe Vertrag für [Endkunden-Name] (Customer-ID: [Endkunden-ID]) mit dem Produkt "[Produkt-Name]" am [Ablaufdatum] mit der Hinterlegung "[Vertrags-Info]" ausläuft.
+
+Um eine unterbrechungsfreie Nutzung Ihrer Adobe Produkte sicherzustellen, müssen Sie mögliche Änderungen für die Verlängerung bis spätestens fünf Tage vor dem Stichtag hinterlegen. 
+
+[Kondition-Text]
+
+Gerne unterstützen wir Sie bei der Vertragsverlängerung oder bei einer möglichen Anpassung des Lizenzmodells.
+
+Bei Fragen steht Ihnen unser Adobe Team unter adobe-de@also.com selbstverständlich gerne zur Verfügung.
+
+Mit freundlichen Grüßen,
+
+Ihr ALSO Adobe Team

@@ -10,6 +10,27 @@ df_merged = None
 
 # ---------------- Functions
 
+def normalize_dates(series):
+    def parse_date(x):
+        if isinstance(x, (pd.Timestamp, datetime)):
+            return x
+        if pd.isna(x):
+            return pd.NaT
+        return pd.to_datetime(x, dayfirst=True, errors='coerce')
+
+    return series.apply(parse_date)
+
+def merge_frames(interface):
+    global df1, df2
+
+    if interface.loaded_data1 and interface.loaded_data2:
+        merged_df = df1.merge(df2, on='Customer_ID', how='inner', suffixes=('_df1', '_df2'))
+        merged_df.sort_values(by='End_Date', inplace=True)
+        return merged_df
+    else:
+        logs.new_info("Dataframes not yet loaded or empty.")
+        return None
+
 def load_excel(interface, button_name) -> None:
     """
     The loading and parsing function that is triggered once an Excel-Select button from ui.UserInterface was pressed
@@ -51,31 +72,37 @@ def load_excel(interface, button_name) -> None:
 
         try:
             if button_name == "Button 1":
-                df1 = pd.read_excel(file_path, header=None, usecols=[1, 3]) # parses customerid and email
+                df1 = pd.read_excel(file_path, header=None, usecols=[1, 2, 3, 9]) # parses customerid, email, sap number
                 df1 = df1.drop(index=0)
                 df1.sort_values(by=1, inplace=True) # customerid ascending to match df2
-                df1.columns = ["Customer ID", "Mail-Address"]
+                df1.columns = ["Customer_ID", "Customer_Name", "Mail_Address", "SAP_Number"]
+                df1["Customer_ID"] = df1["Customer_ID"].astype(str).str.strip()
+
                 
                 interface.loaded_data1 = True # global ui info check
             
             else:
                 try:
-                    selected_enddate = datetime.strptime(interface.get_enddate(), "%d-%m-%Y").date()
+                    selected_enddate = datetime.strptime(interface.get_enddate(), "%d-%m-%Y").date() # tk error prevention
                 except ValueError:
-                    interface.update_status("Ungültiges Enddatum-Format.")
+                    interface.update_status("Ungültiges Zieldatum-Format.")
                     logs.new_info("Invalid enddate format.")
                     return
                 
-                if selected_enddate != datetime.today().date():
-                    end_date = pd.to_datetime(interface.get_enddate(), dayfirst=True)
+                if selected_enddate != datetime.today().date(): # if date other than today
+                    end_date = pd.to_datetime(interface.get_enddate(), dayfirst=True) # parse enddate as panda datetime object
                 else:
-                    interface.update_status("Enddatum nicht gesetzt...")
-                    logs.new_info("Enddate not set...")
+                    interface.update_status("Zieldatum nicht richtig gesetzt...")
+                    logs.new_info("Enddate is not correctly set...")
                     return
                 
-                df2 = pd.read_excel(file_path, header=None, usecols=[3, 5, 6, 18]) # parses contractenddate, enddateinfo, productname columns, customerid
+                df2 = pd.read_excel(file_path, header=None, usecols=[3, 5, 6, 16, 17, 18]) # parses contractenddate, enddateinfo, productname, customerid
                 df2 = df2.drop(index=0)
-                df2[3] = pd.to_datetime(df2[3], dayfirst=True) # parses contractenddate column as date
+                print(df2[3].apply(type).value_counts()) # debug
+                
+                df2[3] = normalize_dates(df2[3])
+                # df2[3] = pd.to_datetime(df2[3], dayfirst=True, errors='coerce') # other solution for debug use
+                # df2[3] = pd.to_datetime(df2[3], dayfirst=True) # other solution for debug use
 
                 df2 = df2[ # only leaves the rows that have the current month and current year as a value in column 3 and "Adobe" in 6
                             (now <= df2[3]) & (df2[3] <= end_date) &
@@ -84,7 +111,9 @@ def load_excel(interface, button_name) -> None:
                 
                 df2.sort_values(by=18, inplace=True) # customerid ascending to match df1
                 
-                df2.columns = ["End-Date", "End-Info", "Product", "Customer ID"]
+                df2.columns = ["End_Date", "End_Info", "Product", "Last_Customer_ID", "Last_Customer_Name", "Customer_ID"]
+                df2["Customer_ID"] = df2["Customer_ID"].astype(str).str.strip()
+
                 
                 interface.loaded_data2 = True # global ui info check
 
@@ -100,14 +129,3 @@ def load_excel(interface, button_name) -> None:
         logs.new_error(f"Error selecting File: {f}")
     
     df_merged = merge_frames(interface)
-
-def merge_frames(interface):
-    global df1, df2
-
-    if interface.loaded_data1 and interface.loaded_data2:
-        merged_df = df1.merge(df2, on='Customer ID', how='inner', suffixes=('_df1', '_df2'))
-        merged_df.sort_values(by='End-Date', inplace=True)
-        return merged_df
-    else:
-        logs.new_info("Dataframes not yet loaded or empty.")
-        return None

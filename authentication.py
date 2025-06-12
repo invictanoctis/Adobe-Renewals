@@ -104,8 +104,9 @@ def send_mail(interface:object, token:str, user_address:str, subject:str, body:s
         response = requests.post(GRAPH_API_URL.format(user_id=user_address), headers=headers, json=email_data) # the Graph API call that tries to send the mail
         
         if response.status_code == 202: # if the request was successful
-            interface.update_status(f"Mail gesendet an: {recipient_address}")
             logs.new_info(f"Mail send to: {recipient_address}")
+            logs.new_info(f"\nSubject:{subject}\nBody:\n{body}")
+            interface.update_status(f"Mail an {recipient_address} gesendet...")
             return True # for possible further checking
         else:
             raise Exception("post error") # leading to except block even though no specific "code error" was encountered
@@ -115,5 +116,8 @@ def send_mail(interface:object, token:str, user_address:str, subject:str, body:s
         logs.new_error(f"Error {e} + {response.status_code} sending mail to: {recipient_address}")
         return False # for possible further checking
 
-def placeholder(): # temporarily in order for ui to function
-    pass
+
+# def testing(interface, token, user_address, subject, body, recipient_address): 
+#         logs.new_info(f"Mail send to: {recipient_address}")
+#         logs.new_info(f"\nSubject:{subject}\nBody:\n{body}")
+#         interface.update_status(f"Mail an {recipient_address} gesendet...")
