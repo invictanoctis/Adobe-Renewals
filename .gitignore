@@ -20,3 +20,6 @@ version.txt
 
 # Ignore mailinfo
 suggested_mailtext.txt
+
+# Ignore pngs
+ressources/*.png
