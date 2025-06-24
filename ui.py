@@ -30,7 +30,7 @@ class UserInterface():
         # root setup
         self.root = tk.Tk()
         self.root.title("Adobe Renewal Mailing")
-        self.root.geometry("800x600")
+        self.root.geometry("1200x800")
         self.root.configure(bg=self.offwhite)
 
         # title label
@@ -53,105 +53,128 @@ class UserInterface():
         self.left_frame = tk.Frame(self.main_frame, bg=self.white)
         self.left_frame.pack(side="left", expand=True, fill="both", padx=(0, 10))
 
-        # date label
-        tk.Label(self.left_frame,
-                 text="Zeitraum definieren:", 
-                 font=("Arial", 12, "bold"),
-                 bg=self.white,
-                 fg=self.black).pack(anchor="w", pady=5)
-
-        # date entry
-        self.enddate = tkc.DateEntry(self.left_frame, 
-                                 width=12,
-                                 background=self.grey,
-                                 foreground=self.white, 
-                                 borderwidth=1,
-                                 date_pattern='dd-mm-y')
-        self.enddate.pack(anchor="w", pady=2)
-
-        # Excel button frame 1
-        self.excel1_btn_frame = tk.Frame(self.left_frame, bg=self.white)
-        self.excel1_btn_frame.pack(pady=5, anchor="w")
-
-        # Excel button frame 2
-        self.excel2_btn_frame = tk.Frame(self.left_frame, bg=self.white)
-        self.excel2_btn_frame.pack(pady=5, anchor="w")
-
         # right frame
         self.right_frame = tk.Frame(self.main_frame, bg=self.white)
         self.right_frame.pack(side="right", expand=True,  fill="both", padx=(10, 0))
 
         # ---------------- Left Side
+        
+        # date frame
+        self.date_frame = tk.Frame(self.left_frame, bg=self.white)
+        self.date_frame.pack(anchor="w", pady=2)
+
+        # date label
+        tk.Label(self.date_frame,
+                 text="Zeitraum definieren:", 
+                 font=("Arial", 12, "bold"),
+                 bg=self.white,
+                 fg=self.black).pack(anchor="w", pady=2, padx=10)
+
+        # date input frame
+        self.date_input_frame = tk.Frame(self.date_frame, bg=self.white)
+        self.date_input_frame.pack(anchor="w", pady=2, padx=10)
+
+        # date entry
+        self.enddate = tkc.DateEntry(
+                    self.date_input_frame,
+                    width=12,
+                    background=self.grey,
+                    foreground=self.white,
+                    borderwidth=1,
+                    date_pattern='dd-mm-y'
+        )
+        self.enddate.pack(pady=2, side="left", fill="x", expand=True)
+
+        # date checkbutton + variable
+        self.duedate_value = tk.BooleanVar(value=False)
+
+        self.duedate_checkbox = tk.Checkbutton(
+                    self.date_input_frame,
+                    text="Stichtag verwenden",
+                    variable=self.duedate_value,
+                    bg=self.white,
+                    fg=self.black,
+                    font=("Arial", 10)
+        )
+        self.duedate_checkbox.pack(side="left", padx=10)
+
+        # Excel button frame 1
+        self.excel1_btn_frame = tk.Frame(self.left_frame, bg=self.white)
+        self.excel1_btn_frame.pack(pady=5, anchor="w")
 
         # Excel 1 label
         tk.Label(self.excel1_btn_frame, 
                  text="Reseller Informationen:", 
                  font=("Arial", 12, "bold"),
                  bg=self.white, 
-                 fg=self.black).pack(anchor="w", pady=5)
+                 fg=self.black).pack(anchor="w", pady=5, padx=10)
         
         # Excel 1 load button
         tk.Button(self.excel1_btn_frame, 
                   text="Durchsuchen", 
                   bg=self.white, 
                   fg=self.black,
-                  command=lambda: lists.load_excel(self, "Button 1")).pack(side="left", padx=(0, 5))
+                  command=lambda: lists.load_excel(self, "Button 1")).pack(side="left", padx=10)
+
+        # Excel button frame 2
+        self.excel2_btn_frame = tk.Frame(self.left_frame, bg=self.white)
+        self.excel2_btn_frame.pack(pady=5, anchor="w")
 
         # Excel 2 label
         tk.Label(self.excel2_btn_frame, 
                  text="Renewal Overview:", 
                  font=("Arial", 12, "bold"),
                  bg=self.white, 
-                 fg=self.black).pack(anchor="w", pady=5)
+                 fg=self.black).pack(anchor="w", pady=5, padx=10)
         
         # Excel 2 load button
         tk.Button(self.excel2_btn_frame, 
                   text="Durchsuchen", 
                   bg=self.white, 
                   fg=self.black,
-                  command=lambda: lists.load_excel(self, "Button 2")).pack(side="left", padx=(0, 5))
+                  command=lambda: lists.load_excel(self, "Button 2")).pack(side="left", padx=10)
 
         # Excel view button
         tk.Button(self.left_frame, 
                   text="Listen Aufrufen", 
                   bg=self.white, 
                   fg=self.black,
-                  command=lambda: self.display_treeview(lists.df_merged)).pack(anchor="w", pady=10)
+                  command=lambda: self.display_treeview(lists.df_merged)).pack(anchor="w", pady=15, padx=10)
 
         # mail label
         tk.Label(self.left_frame, 
                  text="User-Mail:", 
                  font=("Arial", 12, "bold"),
                  bg=self.white, 
-                 fg=self.black).pack(anchor="w", pady=5)
+                 fg=self.black).pack(anchor="w", pady=5, padx=10)
 
         # mail entry
         self.user = tk.Entry(self.left_frame, 
                              width=40, 
                              bg=self.offwhite, 
                              relief="groove")
-        self.user.pack(pady=2)
+        self.user.pack(fill="x", padx=10)
 
         # subject label
         tk.Label(self.left_frame,
                  text="Betreff:", 
                  font=("Arial", 12, "bold"),
                  bg=self.white, 
-                 fg=self.black).pack(anchor="w", pady=5)
+                 fg=self.black).pack(anchor="w", pady=5, padx=10)
 
         # subject entry
         self.subject = tk.Entry(self.left_frame, 
                                 width=40, 
                                 bg=self.offwhite, 
                                 relief="groove")
-        self.subject.pack(pady=2)
+        self.subject.pack(fill="x", padx=10)
 
         # body label
         tk.Label(self.left_frame, 
                  text="Inhalt:", 
                  font=("Arial", 12, "bold"),
                  bg=self.white, 
-                 fg=self.black).pack(anchor="w", pady=5)
+                 fg=self.black).pack(anchor="w", pady=5, padx=10)
 
         # body text
         self.body = tk.Text(self.left_frame, 
@@ -159,7 +182,7 @@ class UserInterface():
                             width=40, 
                             bg=self.offwhite, 
                             relief="groove")
-        self.body.pack(pady=2)
+        self.body.pack(fill="both", expand=True, padx=10, pady=5)
         
         # ---------------- Right Side
 
@@ -208,7 +231,7 @@ class UserInterface():
                                   state="disabled",
                                   wrap="word", 
                                   bg=self.offwhite)
-        self.status_box.pack(pady=10)
+        self.status_box.pack(pady=10, padx=30, fill="both", expand=True)
 
         # ---------------- Other
 
@@ -291,6 +314,15 @@ class UserInterface():
         """
         return [self.get_user(), self.get_subject(), self.get_body()]
     
+    def get_duedate_info(self) -> bool:
+        """
+        Get function to retrieve the duedate checkbox value
+
+        Returns:
+            bool: the current value of the duedate checkbox
+        """
+        return self.duedate_value.get()
+
     def check_info(self) -> None:
         """
         Checks whether all the mail information was given by the user, sets loaded_info True if that's the case
@@ -310,7 +342,14 @@ class UserInterface():
             self.update_status("Nicht alle Informationen wurden angegeben...")
             logs.new_info("Not every mail information was given...")
 
-    def display_treeview(self, df) -> None:
+    def display_treeview(self, df:object) -> None:
+        """
+        Function to display the loaded and merged dataframes/excel files in a comprehensive treeview
+
+        Args:
+            df (object): panda dataframe object
+        """
+
         # lag/crash prevention to check whether both lists was loaded
         if not all([self.loaded_data1, self.loaded_data2]):
             threading.Thread(target=lambda: self.update_status("Excel noch nicht geladen..."), daemon=True).start()

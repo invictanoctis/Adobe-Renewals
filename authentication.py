@@ -21,7 +21,7 @@ GRAPH_API_URL = "https://graph.microsoft.com/v1.0/users/{user_id}/sendMail" # us
     
 def get_access_token(interface:object) -> str | None:
     """
-    Requests an access token from Azure API
+    Function that requests an access token from Azure API
 
     Args:
         interface (object): object of ui.UserInterface class

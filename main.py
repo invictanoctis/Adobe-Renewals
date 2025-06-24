@@ -17,7 +17,6 @@ def back_loop(interface):
         return
 
     token = authentication.get_access_token(interface)
-    print(token) #TEMP
 
     alias = interface.get_user()
     subject = interface.get_subject()
@@ -30,8 +29,8 @@ def back_loop(interface):
         body_parsed = mail.parse_mail(body, row)
         recipient_address = row.Mail_Address
 
-        # print(interface, token, alias, subject_parsed, body_parsed, recipient_address) # debug
         authentication.send_mail(interface, token, alias, subject_parsed, body_parsed, recipient_address)
+        # print(interface, token, alias, subject_parsed, body_parsed, recipient_address) # debug
         # authentication.testing(interface, token, alias, subject_parsed, body_parsed, recipient_address) # debug
 
         time.sleep(3)

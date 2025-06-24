@@ -11,3 +11,12 @@ venv/
 
 # Ignore environment files
 .env
+
+# Ignore pyinstaller ressources
+build/
+dist/
+AdobeRenewalTool.spec
+version.txt
+
+# Ignore mailinfo
+suggested_mailtext.txt

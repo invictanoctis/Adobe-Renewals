@@ -1,9 +1,12 @@
 import logging
 import os
+import sys
 from datetime import datetime
 
-# crreates a directory for the logs if it does not exist
-log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logs")
+base_dir = os.path.dirname(os.path.abspath(getattr(sys, '_MEIPASS', sys.argv[0]))) # scripts will be frozen so this is needed
+
+# creates a directory for the logs if it does not exist
+log_dir = os.path.join(base_dir, "logs")
 os.makedirs(log_dir, exist_ok=True)
 
 # creates a log file with the current date and time

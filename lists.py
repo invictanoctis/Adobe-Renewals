@@ -10,7 +10,17 @@ df_merged = None
 
 # ---------------- Functions
 
-def normalize_dates(series):
+def normalize_dates(series:object) -> object:
+    """
+    Function to normalize date formats in a pandas series
+
+    Args:
+        series (object): pd.Series object containing date values
+    
+    Returns:
+        object: pd.Series object containing nomalized date values
+    """
+
     def parse_date(x):
         if isinstance(x, (pd.Timestamp, datetime)):
             return x
@@ -20,7 +30,16 @@ def normalize_dates(series):
 
     return series.apply(parse_date)
 
-def merge_frames(interface):
+def merge_frames(interface:object) -> object | None:
+    """
+    The merging function that is triggered once list 2 was loaded
+
+    Args:
+        interface (object): object of ui.UserInterface
+
+    Returns:
+        object | None: Merged DataFrame if both lists were loaded, None if dataframes are not loaded or empty
+    """
     global df1, df2
 
     if interface.loaded_data1 and interface.loaded_data2:
@@ -31,7 +50,7 @@ def merge_frames(interface):
         logs.new_info("Dataframes not yet loaded or empty.")
         return None
 
-def load_excel(interface, button_name) -> None:
+def load_excel(interface:object, button_name:str) -> None:
     """
     The loading and parsing function that is triggered once an Excel-Select button from ui.UserInterface was pressed
 
@@ -104,10 +123,16 @@ def load_excel(interface, button_name) -> None:
                 # df2[3] = pd.to_datetime(df2[3], dayfirst=True, errors='coerce') # other solution for debug use
                 # df2[3] = pd.to_datetime(df2[3], dayfirst=True) # other solution for debug use
 
-                df2 = df2[ # only leaves the rows that have the current month and current year as a value in column 3 and "Adobe" in 6
-                            (now <= df2[3]) & (df2[3] <= end_date) &
-                            df2[6].str.contains("Adobe", case=False, na=False)
-                        ]
+                if interface.get_duedate_info() == False:
+                    df2 = df2[ # only leaves the rows that have the current month and current year as a value in column 3 and "Adobe" in 6
+                                (now <= df2[3]) & (df2[3] <= end_date) &
+                                df2[6].str.contains("Adobe", case=False, na=False)
+                            ]
+                else:
+                    df2 = df2[ # only leaves the rows that have the due date as a value in column 3 and "Adobe" in 6
+                                (df2[3] == end_date) &
+                                df2[6].str.contains("Adobe", case=False, na=False)
+                            ]
                 
                 df2.sort_values(by=18, inplace=True) # customerid ascending to match df1
                 
