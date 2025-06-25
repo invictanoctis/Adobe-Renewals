@@ -23,16 +23,16 @@
 Das **Adobe Renewal Tool** ist ein Automatisierungswerkzeug zur Erstellung und Versendung von Adobe Renewal Notices. Es liest Informationen aus streng strukturierten Excel-Dateien aus und integriert diese in einen automatisierten E-Mail-Prozess. Aufgrund des fest definierten Formats dieser Vorlagen ist eine Nutzung außerhalb der Organisation nur eingeschränkt möglich.
 
 Der Versand erfolgt über einen globalen, applikationsbasierten Sign-In-Prozess, was die externe Nutzung zusätzlich einschränkt.  
-Die Authentifizierung erfolgt über einen Azure Client Secret.
+Die Authentifizierung erfolgt über Azure Client Secret.
 
-Zur Nachvollziehbarkeit und Transparenz stehen die verwendeten Excel-Vorlagen unten zum Download bereit.
+Zur Nachvollziehbarkeit oder möglichen Eigennutzung stehen die verwendeten Excel-Vorlagen unten zum Download bereit.
 
 ---
 
 ## Erforderlich
 
-- Eine Datei mit dem Namen 'reseller_information.xlsb' (fest codiert zur Fehlervermeidung)
-- Eine Datei mit dem Namen 'renewal_overview.xlsb' (fest codiert zur Fehlervermeidung)
+- Eine Datei mit dem Namen 'reseller_information.xlsb' (hardcoded zur Fehlervermeidung)
+- Eine Datei mit dem Namen 'renewal_overview.xlsb' (hardcoded zur Fehlervermeidung)
 - Ein freigegebenes Microsoft 365-Postfach
 - Eine Azure-Anwendung mit Graph API 'sendAs'-Berechtigung und aktivierter Client-Secret-Authentifizierung
 
@@ -40,10 +40,10 @@ Zur Nachvollziehbarkeit und Transparenz stehen die verwendeten Excel-Vorlagen un
 
 ## Anwendung
 
-1. Doppelklicken Sie auf 'AdobeRenewalTool.exe', um das Tool zu starten — keine Installation erforderlich.
-2. Folgen Sie der einfachen, geführten Benutzeroberfläche, um den Renewal-Workflow abzuschließen und den Versandprozess zu starten.
+1. Doppelklicken auf 'AdobeRenewalTool.exe', um das Tool zu starten — keine Installation erforderlich.
+2. Der einfachen Benutzeroberfläche folgen, um den Renewal-Workflow abzuschließen und den Versandprozess zu starten.
 3. Wichtig: Jedes Mal, wenn das Datum geändert wurde, muss die zweite Excel-Datei ('renewal_overview.xlsb') neu geladen werden, da es sonst zu Problemen beim Parsen kommt.
-4. Alle Aktionen werden in individuellen Logdateien protokolliert. Diese dienen gleichzeitig als Versandnachweis, da bei applikationsbasiertem Sign-In in der Regel kein 'Sent'-Ordner verfügbar ist.
+4. Alle Aktionen werden in individuellen Logdateien protokolliert. Diese dienen gleichzeitig als Versandnachweis, da bei applikationsbasierten Sign-In in der Regel kein 'Sent'-Ordner verfügbar ist.
 5. Die Logdateien werden pro Sitzung im Unterordner 'logs/' gespeichert.
 
 ## Mailing
