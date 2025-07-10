@@ -70,24 +70,46 @@ def load_excel(interface:object, button_name:str) -> None:
         filename = file_path.split("/")[-1]
         filename_formatted = filename.rsplit(".", 1)[0].lower()
 
-        expected_files = { # best practice use of dict for later excel error prevention
-            "Button 1": "reseller_information",
-            "Button 2": "renewal_overview"
-        }
+        expected_files = {
+            "Button 1": [
+                "reseller_information",
+                "reseller_information (1)",
+                "reseller_information (2)",
+                "reseller_information (3)",
+                "reseller_information (4)",
+                "reseller_information (5)",
+                "reseller_information (6)",
+                "reseller_information (7)",
+                "reseller_information (8)",
+                "reseller_information (9)"
+                ],
 
-        if button_name not in expected_files: # can't be encountered, but prevents possible bugs in the future
+            "Button 2": [
+                "renewal_overview",
+                "renewal_overview (1)",
+                "renewal_overview (2)",
+                "renewal_overview (3)",
+                "renewal_overview (4)",
+                "renewal_overview (5)",
+                "renewal_overview (6)",
+                "renewal_overview (7)",
+                "renewal_overview (8)",
+                "renewal_overview (9)"
+                ]
+            }
+
+
+        if button_name not in expected_files: # can't be encountered rn, future error prevention
             interface.update_status("Unbekannter Button...")
             logs.new_error(f"Unknown button name: {button_name}")
             return
 
-        expected_filename = expected_files[button_name] # looks for correct filename in dict
-
-        if filename_formatted != expected_filename: # if wrong list/filename was selected
+        if filename_formatted not in expected_files[button_name]:
             interface.update_status("Falsche Liste ausgewählt...")
             logs.new_info(f"Wrong List selected: {filename}")
             return
-
-        now = datetime.now() #current date and time
+        
+        # now = datetime.now() #current date and time
 
         try:
             if button_name == "Button 1":
@@ -102,17 +124,24 @@ def load_excel(interface:object, button_name:str) -> None:
             
             else:
                 try:
-                    selected_enddate = datetime.strptime(interface.get_enddate(), "%d-%m-%Y").date() # tk error prevention
+                    selected_enddate = datetime.strptime(interface.get_enddate(), "%d-%m-%Y").date() # tk date formatting error prevention
+                    selected_startdate = datetime.strptime(interface.get_startdate(), "%d-%m-%Y").date() # tk date formatting error prevention
                 except ValueError:
-                    interface.update_status("Ungültiges Zieldatum-Format.")
-                    logs.new_info("Invalid enddate format.")
+                    interface.update_status("Ungültiges Datum-Format.")
+                    logs.new_info("Invalid date format.")
                     return
                 
-                if selected_enddate != datetime.today().date(): # if date other than today
-                    end_date = pd.to_datetime(interface.get_enddate(), dayfirst=True) # parse enddate as panda datetime object
+                if selected_enddate != datetime.today().date() and selected_enddate > datetime.today().date(): # if enddate not today and before today
+                    if selected_startdate < selected_enddate: # if startdate is before enddate
+                        end_date = pd.to_datetime(interface.get_enddate(), dayfirst=True) # parse enddate as panda datetime object
+                        start_date = pd.to_datetime(interface.get_startdate(), dayfirst=True) # parse startdate as panda datetime object
+                    else:
+                        interface.update_status("Startdatum muss vor Enddatum liegen...")
+                        logs.new_info("Date logic error: startdate must be before enddate.")
+                        return
                 else:
-                    interface.update_status("Zieldatum nicht richtig gesetzt...")
-                    logs.new_info("Enddate is not correctly set...")
+                    interface.update_status("Enddatum darf nicht heute sein...")
+                    logs.new_info("Date logic error: enddate set as 'today'.")
                     return
                 
                 df2 = pd.read_excel(file_path, header=None, usecols=[3, 5, 6, 16, 17, 18]) # parses contractenddate, enddateinfo, productname, customerid
@@ -125,7 +154,7 @@ def load_excel(interface:object, button_name:str) -> None:
 
                 if interface.get_duedate_info() == False:
                     df2 = df2[ # only leaves the rows that have the current month and current year as a value in column 3 and "Adobe" in 6
-                                (now <= df2[3]) & (df2[3] <= end_date) &
+                                (start_date <= df2[3]) & (df2[3] <= end_date) &
                                 df2[6].str.contains("Adobe", case=False, na=False)
                             ]
                 else:

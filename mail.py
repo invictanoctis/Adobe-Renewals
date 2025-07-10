@@ -17,7 +17,7 @@ def parse_mail(text, row):
         "[Kunden-ID]": str(row.Customer_ID),
         "[Kunden-Mail]": row.Mail_Address,
         "[Vertrags-Info]": row.End_Info,
-        "[Ablaufdatum]": str(row.End_Date),
+        "[Ablaufdatum]": str(row.End_Date), # datetime.strptime(str(row.End_Date), "%d-%m-%Y").date()
         "[Produkt-Name]": row.Product,
         "[Kondition-Text]": conditional_text(row.End_Info)
     }

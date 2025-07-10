@@ -74,7 +74,18 @@ class UserInterface():
         self.date_input_frame = tk.Frame(self.date_frame, bg=self.white)
         self.date_input_frame.pack(anchor="w", pady=2, padx=10)
 
-        # date entry
+        # date start entry
+        self.startdate = tkc.DateEntry(
+                    self.date_input_frame,
+                    width=12,
+                    background=self.grey,
+                    foreground=self.white,
+                    borderwidth=1,
+                    date_pattern='dd-mm-y'
+        )
+        self.startdate.pack(pady=2, side="left", fill="x", expand=True)
+
+        # date end entry
         self.enddate = tkc.DateEntry(
                     self.date_input_frame,
                     width=12,
@@ -83,14 +94,14 @@ class UserInterface():
                     borderwidth=1,
                     date_pattern='dd-mm-y'
         )
-        self.enddate.pack(pady=2, side="left", fill="x", expand=True)
+        self.enddate.pack(pady=2, padx=5, side="left", fill="x", expand=True)
 
         # date checkbutton + variable
         self.duedate_value = tk.BooleanVar(value=False)
 
         self.duedate_checkbox = tk.Checkbutton(
                     self.date_input_frame,
-                    text="Stichtag verwenden",
+                    text="2. Datum als Stichtag",
                     variable=self.duedate_value,
                     bg=self.white,
                     fg=self.black,
@@ -295,6 +306,16 @@ class UserInterface():
 
         return self.body.get("1.0", "end").strip()
 
+    def get_startdate(self) -> str:
+        """
+        Get function to retrieve the startdate -specified in the ui- that is needed for filtering the dataframes
+
+        Returns:
+            str: the current startdate
+        """
+
+        return self.startdate.get()
+    
     def get_enddate(self) -> str:
         """
         Get function to retrieve the enddate -specified in the ui- that is needed for filtering the dataframes
