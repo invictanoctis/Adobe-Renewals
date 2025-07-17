@@ -1,4 +1,4 @@
-## Adobe Renewal Tool
+# Adobe Renewal Tool
 
 **Version:** v1.0
 
@@ -18,7 +18,7 @@
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## Beschreibung
+### Beschreibung
 
 Das **Adobe Renewal Tool** ist ein Automatisierungswerkzeug zur Erstellung und Versendung von Adobe Renewal Notices. Es liest Informationen aus streng strukturierten Excel-Dateien aus und integriert diese in einen automatisierten E-Mail-Prozess. Aufgrund des fest definierten Formats dieser Vorlagen ist eine Nutzung außerhalb der Organisation nur eingeschränkt möglich.
 
@@ -29,7 +29,7 @@ Zur Nachvollziehbarkeit oder möglichen Eigennutzung stehen die verwendeten Exce
 
 ---
 
-## Erforderlich
+### Erforderlich
 
 - Eine Datei mit dem Namen 'reseller_information.xlsb' (hardcoded zur Fehlervermeidung)
 - Eine Datei mit dem Namen 'renewal_overview.xlsb' (hardcoded zur Fehlervermeidung)
@@ -38,15 +38,15 @@ Zur Nachvollziehbarkeit oder möglichen Eigennutzung stehen die verwendeten Exce
 
 ---
 
-## Anwendung
+### Anwendung
 
 1. Doppelklicken auf 'AdobeRenewalTool.exe', um das Tool zu starten — keine Installation erforderlich.
 2. Der einfachen Benutzeroberfläche folgen, um den Renewal-Workflow abzuschließen und den Versandprozess zu starten.
-3. Wichtig: Jedes Mal, wenn das Datum geändert wurde, muss die zweite Excel-Datei ('renewal_overview.xlsb') neu geladen werden, da es sonst zu Problemen beim Parsen kommt.
+3. Wichtig: Jedes Mal, wenn ein Datum geändert wurde, muss die zweite Excel-Datei ('renewal_overview.xlsb') neu geladen werden, da sonst nach den alten Daten gefiltert werden würde.
 4. Alle Aktionen werden in individuellen Logdateien protokolliert. Diese dienen gleichzeitig als Versandnachweis, da bei applikationsbasierten Sign-In in der Regel kein 'Sent'-Ordner verfügbar ist.
 5. Die Logdateien werden pro Sitzung im Unterordner 'logs/' gespeichert.
 
-## Mailing
+### Mailing
 
 Die folgenden Platzhalter können im E-Mail-Text oder im Betreff verwendet werden. Sie werden bei der Verarbeitung automatisch mit den Werten aus der jeweiligen Zeile der Excel-Daten ersetzt:
 
@@ -74,7 +74,7 @@ Die folgenden Platzhalter können im E-Mail-Text oder im Betreff verwendet werde
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-## Description
+### Description
 
 The **Adobe Renewal Tool** is an automation utility for Adobe renewal notices. It parses information from strictly structured Excel files and integrates it into an automated mailing process. Due to the rigid format of these Excel templates, use outside of the organization is only possible to a limited extent.
 
@@ -85,7 +85,7 @@ Nevertheless, the Excel templates are provided below for download to ensure tran
 
 ---
 
-## Required
+### Required
 
 - A file named 'reseller_information.xlsb' (hardcoded to prevent errors)
 - A file named 'renewal_overview.xlsb' (hardcoded to prevent errors)
@@ -94,7 +94,7 @@ Nevertheless, the Excel templates are provided below for download to ensure tran
 
 ---
 
-## How to Use
+### How to Use
 
 1. Double-click 'AdobeRenewalTool.exe' to launch the tool — no installation required.
 2. Follow the simple, guided on-screen UI to complete the renewal workflow and initiate the sending process.
@@ -123,7 +123,7 @@ The following placeholders can be used in the email body or subject. They will a
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-##  Files Included
+###  Files Included
 
 | File Name              | Description                                    |
 |------------------------|------------------------------------------------|
