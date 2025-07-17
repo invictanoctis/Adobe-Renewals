@@ -102,7 +102,7 @@ Nevertheless, the Excel templates are provided below for download to ensure tran
 4. All actions are logged to individual log files. These also serve as a record of sent emails, since application-based sign-in typically does not retain messages in a 'Sent' folder.
 5. Logging output is saved in the 'logs/' subfolder, with a new file created for each session.
 
-## Mailing 
+### Mailing 
 
 The following placeholders can be used in the email body or subject. They will automatically be replaced with values from each row of the Excel input data during processing:
 
@@ -123,7 +123,7 @@ The following placeholders can be used in the email body or subject. They will a
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-###  Files Included
+##  Files Included
 
 | File Name              | Description                                    |
 |------------------------|------------------------------------------------|
