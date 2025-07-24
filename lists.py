@@ -73,6 +73,7 @@ def load_excel(interface:object, button_name:str) -> None:
         expected_files = {
             "Button 1": [
                 "reseller_information",
+                "reseller information",
                 "reseller_information (1)",
                 "reseller_information (2)",
                 "reseller_information (3)",
@@ -81,11 +82,21 @@ def load_excel(interface:object, button_name:str) -> None:
                 "reseller_information (6)",
                 "reseller_information (7)",
                 "reseller_information (8)",
-                "reseller_information (9)"
+                "reseller_information (9)",
+                "reseller_information1",
+                "reseller_information2",
+                "reseller_information3",
+                "reseller_information4",
+                "reseller_information5",
+                "reseller_information6",
+                "reseller_information7",
+                "reseller_information8",
+                "reseller_information9"
                 ],
 
             "Button 2": [
                 "renewal_overview",
+                "renewal overview",
                 "renewal_overview (1)",
                 "renewal_overview (2)",
                 "renewal_overview (3)",
@@ -94,7 +105,16 @@ def load_excel(interface:object, button_name:str) -> None:
                 "renewal_overview (6)",
                 "renewal_overview (7)",
                 "renewal_overview (8)",
-                "renewal_overview (9)"
+                "renewal_overview (9)",
+                "renewal_overview1",
+                "renewal_overview2",
+                "renewal_overview3",
+                "renewal_overview4",
+                "renewal_overview5",
+                "renewal_overview6",
+                "renewal_overview7",
+                "renewal_overview8",
+                "renewal_overview9"
                 ]
             }
 

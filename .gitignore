@@ -23,3 +23,6 @@ suggested_mailtext.txt
 
 # Ignore pngs
 ressources/*.png
+
+# Hash getter
+hash_getter.py
